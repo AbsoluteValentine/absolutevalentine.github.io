@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>所有文章 - SpaceLion</title>
+        <link>https://absolutevalentine.github.io/posts/</link>
+        <description>所有文章 | SpaceLion</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>spacelion@foxmail.com (SpikeQiang)</managingEditor>
+            <webMaster>spacelion@foxmail.com (SpikeQiang)</webMaster><lastBuildDate>Sun, 20 Jun 2021 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://absolutevalentine.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>关于软件验证中的单元测试</title>
+    <link>https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</link>
+    <pubDate>Sun, 20 Jun 2021 00:00:00 &#43;0000</pubDate>
+    <author>作者</author>
+    <guid>https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</guid>
+    <description><![CDATA[为什么使用单元测试 一般来说，验证的两个思路是证明和证伪，分别对应着软件验证的形式化验证和测试。 证明适用于在有明确的逻辑范畴内通过演绎推理（如]]></description>
+</item></channel>
+</rss>
