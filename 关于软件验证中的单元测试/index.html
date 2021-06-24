@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>关于软件验证中的单元测试 - SpaceLion</title><meta name="Description" content="软件,区块链,机器学习,金融,股票,基金,数字货币,量化投资"><meta property="og:title" content="关于软件验证中的单元测试" />
+<meta property="og:description" content="为什么使用单元测试 一般来说，验证的两个思路是证明和证伪，分别对应着软件验证的形式化验证和测试。 证明适用于在有明确的逻辑范畴内通过演绎推理（如" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" /><meta property="og:image" content="https://absolutevalentine.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-24T16:58:33&#43;08:00" />
+<meta property="article:modified_time" content="2021-06-24T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://absolutevalentine.github.io/logo.png"/>
+
+<meta name="twitter:title" content="关于软件验证中的单元测试"/>
+<meta name="twitter:description" content="为什么使用单元测试 一般来说，验证的两个思路是证明和证伪，分别对应着软件验证的形式化验证和测试。 证明适用于在有明确的逻辑范畴内通过演绎推理（如"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/app.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "关于软件验证中的单元测试",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/absolutevalentine.github.io\/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95\/"
+        },"genre": "posts","keywords": "Java, 测试","wordcount":  1248 ,
+        "url": "https:\/\/absolutevalentine.github.io\/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95\/","datePublished": "2021-06-24T16:58:33+08:00","dateModified": "2021-06-24T00:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "SpikeQiang"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('dark' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'dark' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="SpaceLion"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>SpaceLion</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="SpaceLion"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>SpaceLion</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content always-active" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">关于软件验证中的单元测试</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>SpikeQiang</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/java/"><i class="far fa-folder fa-fw"></i>Java</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-24">2021-06-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1248 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;<span id="/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" class="leancloud_visitors" data-flag-title="关于软件验证中的单元测试">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么使用单元测试">为什么使用单元测试</a></li>
+    <li><a href="#java常用测试框架junitmockitopowermock">JAVA常用测试框架junit、mockito、powermock</a>
+      <ul>
+        <li><a href="#junit常用注解">junit常用注解</a></li>
+        <li><a href="#参数化测试">参数化测试</a></li>
+        <li><a href="#断言">断言</a></li>
+        <li><a href="#mockito使用介绍">mockito使用介绍</a></li>
+        <li><a href="#使用powermock-测试private方法">使用powermock 测试private方法</a></li>
+        <li><a href="#使用powermock-mock静态方法final方法new">使用powermock mock静态方法/final方法/new</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h5 id="为什么使用单元测试">为什么使用单元测试</h5>
+<p>一般来说，验证的两个思路是证明和证伪，分别对应着软件验证的形式化验证和测试。</p>
+<p>证明适用于在有明确的逻辑范畴内通过演绎推理（如三段论、假言推理等）进行；证伪可通过举出反例的方式进行。</p>
+<p>软件领域的性质导致证明的困难及收效甚微，绝大部分都采用测试来验证。</p>
+<p>根据测试目的的不同有功能测试、性能测试等；根据是否了解测试对象分为黑盒测试与白盒测试，单元测试属于白盒测试。</p>
+<p>一般来说，开发人员了解代码的结构，自己走一遍流程或CodeReview等形式基本可以发现bug，但为了团队中其他人员及日后的维护，单元测试有一定的存在的合理性。</p>
+<p>因此需要保持单元测试中方法的独立性，隔离测试依赖，调用其他方法时需要模拟；给定输入，执行测试，验证输出，需要用到断言。</p>
+<h5 id="java常用测试框架junitmockitopowermock">JAVA常用测试框架junit、mockito、powermock</h5>
+<h6 id="junit常用注解">junit常用注解</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Ignore</span>                                <span class="n">该注解标记的测试方法在测试中会被忽略</span>
+<span class="nd">@Test</span><span class="o">(</span><span class="n">expected</span><span class="o">=</span><span class="n">xxxException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>     <span class="n">断言该方法会抛出异常</span>
+<span class="nd">@Test</span><span class="o">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">1000</span><span class="o">)</span>                    <span class="n">执行时间超过设置的值该案例会失败</span>
+<span class="nd">@RunWith</span><span class="o">(</span><span class="n">JUnit4</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>                 <span class="n">默认运行器</span>
+<span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>        <span class="n">PowerMockRunner运行器</span>
+<span class="nd">@RunWith</span><span class="o">(</span><span class="n">Parameterized</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>          <span class="n">参数化运行器</span>
+<span class="nd">@Rule</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExpectedExceptionsTest</span> <span class="o">{</span>
+    <span class="nd">@Rule</span>
+    <span class="kd">public</span> <span class="n">ExpectedException</span> <span class="n">thrown</span> <span class="o">=</span> <span class="n">ExpectedException</span><span class="o">.</span><span class="na">none</span><span class="o">();</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">verifiesTypeAndMessage</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">thrown</span><span class="o">.</span><span class="na">expect</span><span class="o">(</span><span class="n">RuntimeException</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">thrown</span><span class="o">.</span><span class="na">expectMessage</span><span class="o">(</span><span class="s">&#34;Runtime exception occurred&#34;</span><span class="o">);</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&#34;Runtime exception occurred&#34;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h6 id="参数化测试">参数化测试</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RunWith</span><span class="o">(</span><span class="n">Parameterized</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Testa</span> <span class="o">{</span>
+    <span class="nd">@Parameterized.Parameters</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Collection</span><span class="o">&lt;?&gt;</span> <span class="n">data</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Object</span><span class="o">[][]</span> <span class="o">{</span> <span class="o">{</span> <span class="s">&#34;1+2&#34;</span><span class="o">,</span> <span class="n">3</span> <span class="o">},</span> <span class="o">{</span> <span class="s">&#34;1+2+5&#34;</span><span class="o">,</span> <span class="n">8</span> <span class="o">}});</span>
+    <span class="o">}</span>
+    <span class="nd">@InjectMocks</span>
+    <span class="n">Calculator</span> <span class="n">calc</span><span class="o">;</span>
+    <span class="nd">@Parameterized.Parameter</span><span class="o">(</span><span class="n">0</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="n">input</span><span class="o">;</span>
+    <span class="nd">@Parameterized.Parameter</span><span class="o">(</span><span class="n">1</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">expected</span><span class="o">;</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testCalculate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">input</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">expected</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h6 id="断言">断言</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">assertEquals</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>    <span class="n">测试a是否等于b</span><span class="err">（</span><span class="n">a和b是原始类型数值或者必须为实现比较而具有equal方法</span><span class="err">）</span>
+<span class="n">assertFalse</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>        <span class="n">测试a是否为false</span><span class="err">（</span><span class="n">假</span><span class="err">），</span><span class="n">a是一个Boolean数值</span><span class="err">。</span>
+<span class="n">assertTrue</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>         <span class="n">测试a是否为true</span><span class="err">（</span><span class="n">真</span><span class="err">），</span><span class="n">a是一个Boolean数值</span>
+<span class="nf">assertNotNull</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>      <span class="n">测试a是否非空</span><span class="err">，</span><span class="n">a是一个对象或者null</span><span class="err">。</span>
+<span class="n">assertNull</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>         <span class="n">测试a是否为null</span><span class="err">，</span><span class="n">a是一个对象或者null</span><span class="err">。</span>
+<span class="n">assertNotSame</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>   <span class="n">测试a和b是否没有都引用同一个对象</span><span class="err">。</span>
+<span class="n">assertSame</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>      <span class="n">测试a和b是否都引用同一个对象</span><span class="err">。</span>
+<span class="n">fail</span><span class="o">(</span><span class="n">string</span><span class="o">)</span>          <span class="n">Fail让测试失败</span><span class="err">，</span><span class="n">并给出指定信息</span><span class="err">。</span>
+</code></pre></td></tr></table>
+</div>
+</div><h6 id="mockito使用介绍">mockito使用介绍</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">通过代码创建</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserServiceTest</span> <span class="o">{</span>  
+    <span class="kd">private</span> <span class="n">UserService</span> <span class="n">userService</span><span class="o">;</span>  
+    <span class="kd">private</span> <span class="n">UserDao</span> <span class="n">mockUserDao</span><span class="o">;</span>  
+    <span class="nd">@Before</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="o">{</span>
+    	<span class="n">mockUserDao</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">UserDao</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>  
+    	<span class="n">userService</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UserServiceImpl</span><span class="o">();</span>  
+    	<span class="n">userService</span><span class="o">.</span><span class="na">setUserDao</span><span class="o">(</span><span class="n">mockUserDao</span><span class="o">);</span>  
+    <span class="o">}</span>
+<span class="n">通过注解创建</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserServiceTest</span> <span class="o">{</span>  
+    <span class="nd">@InjectMocks</span>
+    <span class="kd">private</span> <span class="n">UserServiceImpl</span> <span class="n">userService</span><span class="o">;</span>  
+    <span class="nd">@Mock</span>
+    <span class="kd">private</span> <span class="n">UserDao</span> <span class="n">mockUserDao</span><span class="o">;</span>   
+<span class="o">}</span>
+<span class="n">常用方法</span>
+<span class="n">verify</span>
+    <span class="nf">verify</span><span class="o">(</span><span class="n">mock</span><span class="o">,</span> <span class="n">never</span><span class="o">()).</span><span class="na">add</span><span class="o">();</span>       		  <span class="n">验证add方法没有被调用</span>
+    <span class="nf">verify</span><span class="o">(</span><span class="n">mock</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="n">2</span><span class="o">)).</span><span class="na">add</span><span class="o">();</span>      		  <span class="n">验证add方法被调用了2次</span>
+    <span class="nf">verify</span><span class="o">(</span><span class="n">mock</span><span class="o">,</span> <span class="n">atLeast</span><span class="o">(</span><span class="n">n</span><span class="o">)).</span><span class="na">someMethod</span><span class="o">();</span>        <span class="n">方法至少被调用n次</span>
+    <span class="nf">verify</span><span class="o">(</span><span class="n">mock</span><span class="o">,</span> <span class="n">atMost</span><span class="o">(</span><span class="n">n</span><span class="o">)).</span><span class="na">someMethod</span><span class="o">();</span>         <span class="n">方法最多被调用n次</span>
+<span class="n">when</span>
+    <span class="nf">when</span><span class="o">(</span><span class="n">mock</span><span class="o">.</span><span class="na">someMethod</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">value1</span><span class="o">).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">value2</span><span class="o">);</span>
+    <span class="n">when</span><span class="o">(</span><span class="n">mock</span><span class="o">.</span><span class="na">someMethod</span><span class="o">()).</span><span class="na">thenThrow</span><span class="o">(</span><span class="k">new</span> <span class="n">RuntimeException</span><span class="o">());</span>
+<span class="n">spy</span>
+    <span class="n">List</span> <span class="n">spy</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="k">new</span> <span class="n">LinkedList</span><span class="o">());</span>
+    <span class="n">when</span><span class="o">(</span><span class="n">spy</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">)).</span><span class="na">thenReturn</span><span class="o">(</span><span class="err">“</span><span class="n">foo</span><span class="s">&#34;);
+</span><span class="s">    doReturn(&#34;</span><span class="n">foo</span><span class="err">&#34;</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">spy</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h6 id="使用powermock-测试private方法">使用powermock 测试private方法</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="c1">//类上加注解 @PrepareForTest({xxx.class})
+</span><span class="c1"></span><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">RpaRightsConfService</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RpaRightsConfServiceTest</span> <span class="o">{</span>
+    <span class="nd">@InjectMocks</span>
+    <span class="kd">private</span> <span class="n">RpaRightsConfService</span> <span class="n">rpaRightsConfService</span><span class="o">;</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">getCellValue</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="o">{</span>
+        <span class="n">Row</span> <span class="n">row</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">Row</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">Cell</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">Cell</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">cell</span><span class="o">.</span><span class="na">setCellType</span><span class="o">(</span><span class="n">Cell</span><span class="o">.</span><span class="na">CELL_TYPE_STRING</span><span class="o">);</span>
+        <span class="n">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">row</span><span class="o">.</span><span class="na">getCell</span><span class="o">(</span><span class="n">Mockito</span><span class="o">.</span><span class="na">anyInt</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">cell</span><span class="o">);</span>
+        <span class="c1">//通过反射
+</span><span class="c1"></span>        <span class="n">Method</span> <span class="n">method1</span> <span class="o">=</span> <span class="n">rpaRightsConfService</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredMethod</span><span class="o">(</span><span class="s">&#34;getCellValue&#34;</span><span class="o">,</span> <span class="n">Row</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">method1</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span><span class="c1">// 抑制访问修饰符，使得私有方法变为可以访问的
+</span><span class="c1"></span>        <span class="n">method1</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">rpaRightsConfService</span><span class="o">,</span><span class="n">row</span><span class="o">,</span><span class="n">3</span><span class="o">);</span>
+        <span class="n">Mockito</span><span class="o">.</span><span class="na">verify</span><span class="o">(</span><span class="n">row</span><span class="o">,</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="n">1</span><span class="o">)).</span><span class="na">getCell</span><span class="o">(</span><span class="n">Mockito</span><span class="o">.</span><span class="na">anyInt</span><span class="o">());</span>
+        <span class="c1">//或者通过PowerMockito.method
+</span><span class="c1"></span>        <span class="n">Method</span> <span class="n">method2</span> <span class="o">=</span> <span class="n">PowerMockito</span><span class="o">.</span><span class="na">method</span><span class="o">(</span><span class="n">RpaRightsConfService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&#34;getCellValue&#34;</span><span class="o">,</span> <span class="n">Row</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">Object</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">method2</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">rpaRightsConfService</span><span class="o">,</span><span class="n">row</span><span class="o">,</span><span class="n">3</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">x2</span><span class="o">.</span><span class="na">toString</span><span class="o">()),</span><span class="n">0</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h6 id="使用powermock-mock静态方法final方法new">使用powermock mock静态方法/final方法/new</h6>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RunWith</span><span class="o">(</span><span class="n">PowerMockRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="c1">//类上加注解 @PrepareForTest({xxx.class})
+</span><span class="c1"></span><span class="nd">@PrepareForTest</span><span class="o">({</span><span class="n">JSON</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="n">HSSFWorkbook</span><span class="o">.</span><span class="na">class</span><span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RpaRightsConfServiceTest</span> <span class="o">{</span>
+    <span class="nd">@InjectMocks</span>
+    <span class="kd">private</span> <span class="n">RpaRightsConfService</span> <span class="n">rpaRightsConfService</span><span class="o">;</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">save</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">//mock 静态
+</span><span class="c1"></span>        <span class="n">PowerMockito</span><span class="o">.</span><span class="na">mockStatic</span><span class="o">(</span><span class="n">JSON</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">RpaRightsConfVo</span><span class="o">&gt;</span> <span class="n">rpaRightsConfVoList</span> <span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">RpaRightsConfVo</span><span class="o">&gt;();</span>
+        <span class="n">rpaRightsConfVoList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">RpaRightsConfVo</span><span class="o">());</span>
+        <span class="n">PowerMockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">JSON</span><span class="o">.</span><span class="na">parseArray</span><span class="o">(</span><span class="n">formListJson</span><span class="o">,</span> <span class="n">RpaRightsConfVo</span><span class="o">.</span><span class="na">class</span><span class="o">)).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">rpaRightsConfVoList</span><span class="o">);</span>
+        <span class="n">rpaRightsConfService</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">importExcel</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="o">{</span>
+        <span class="n">RpaRightsConfForm</span> <span class="n">form</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">RpaRightsConfForm</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">InputStream</span> <span class="n">is</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">InputStream</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">FormFile</span> <span class="n">file</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">FormFile</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">HSSFWorkbook</span> <span class="n">wb</span> <span class="o">=</span> <span class="n">PowerMockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">HSSFWorkbook</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">form</span><span class="o">.</span><span class="na">getFile</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="n">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">is</span><span class="o">);</span>
+        <span class="c1">//mock new
+</span><span class="c1"></span>        <span class="n">PowerMockito</span><span class="o">.</span><span class="na">whenNew</span><span class="o">(</span><span class="n">HSSFWorkbook</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">withArguments</span><span class="o">(</span><span class="n">is</span><span class="o">).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">wb</span><span class="o">);</span>
+        <span class="n">rpaRightsConfService</span><span class="o">.</span><span class="na">importExcel</span><span class="o">(</span><span class="n">form</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-06-24</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" data-title="关于软件验证中的单元测试" data-hashtags="Java,测试"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" data-hashtag="Java"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Linkedin" data-sharer="linkedin" data-url="https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Reddit" data-sharer="reddit" data-url="https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"><i class="fab fa-reddit fa-fw"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://absolutevalentine.github.io/%E5%85%B3%E4%BA%8E%E8%BD%AF%E4%BB%B6%E9%AA%8C%E8%AF%81%E4%B8%AD%E7%9A%84%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" data-title="关于软件验证中的单元测试"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/java/">Java</a>,&nbsp;<a href="/tags/%E6%B5%8B%E8%AF%95/">测试</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">SpikeQiang</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div>
+                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+                <i class="fa fa-user"></i>  <span id="busuanzi_value_site_uv"></span>|
+                <i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span>人次
+             </div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/valine/Valine.min.js"></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":30},"comment":{"valine":{"appId":"GkRq7QfXW42MyrDXFvQNQYL8-MdYXbMMI","appKey":"7j8qUfugRfCHQghlCYPtoc5g","avatar":"ss","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"visitor":true}},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
