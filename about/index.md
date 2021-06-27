@@ -37,14 +37,12 @@ z世代
 
 *推荐数字货币支付：*
 
-BTC
+BTC   :   3DGwJxcersF4QzAWsE1SFpRynSbj2p48Md
 
-BCH
+BCH   :   bitcoincash:qz4667nsn09j3tucek33fheu8zamlk5lyung2hte6y
 
-ETH
+ETH   :   0x69a296adA0f0023Fffe230Cde3733B334dc3dea1
 
-LTC
+LTC    :   LY9Wk2yGjthkXsBFGuoWwAc5hyyW13Twrm
 
-USDT
-
-DOGE
+ATOM :  cosmos188fher2rp5avyr3rsc5wcr8dxfdl3vy2t6dney
